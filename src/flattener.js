@@ -7,7 +7,7 @@
  */
 /* jshint strict: false, plusplus: true */
 /*global define: false, require: false, module: false, exports: false */
-(function(root, name, deps, factory) {
+/*(function(root, name, deps, factory) {
     "use strict";
     // Node
     if (typeof deps === 'function') {
@@ -35,49 +35,9 @@
             return mod;
         };
     }
-}(this, "Flattener", function() {
+}(this, "Flattener", function() {*/
+define("flattener", function() {
 
-    /**
-     * Extend method.
-     * @param  {Object} target Source object
-     * @return {Object}        Resulting object from
-     *                         meging target to params.
-     */
-    var _extend = function extend(target) {
-        var sources = [].slice.call(arguments, 1);
-        sources.forEach(function(source) {
-            for (var property in source) {
-                if (source[property] && source[property].constructor &&
-                    source[property].constructor === Object) {
-                    target[property] = target[property] || {};
-                    target[property] = extend(target[property], source[property]);
-                } else target[property] = source[property];
-            }
-        });
-        return target;
-    };
-
-    /**
-     * Shim console, make sure that if no console
-     * available calls do not generate errors.
-     * @return {Object} Console shim.
-     */
-    var _shimConsole = function() {
-        var empty = {},
-            con = {},
-            noop = function() {},
-            properties = 'memory'.split(','),
-            methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-                'groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,' +
-                'table,time,timeEnd,timeStamp,trace,warn').split(','),
-            prop,
-            method;
-
-        while (method = methods.pop()) con[method] = noop;
-        while (prop = properties.pop()) con[prop] = empty;
-
-        return con;
-    };
 
 
     ///////////////////////////////////////////////////
@@ -109,6 +69,8 @@
         prop || (prop = '');
         output || (output = {});
 
+        var isEmpty = false;
+
         if (Object(src) !== src) output[prop] = src;
         else if (Array.isArray(src)) {
             for (var i = 0, l = src.length; i < l; i++) {
@@ -116,7 +78,7 @@
             }
             if (l === 0) output[prop] = [];
         } else {
-            var isEmpty = true;
+            isEmpty = true;
             for (var p in src) {
                 isEmpty = false;
                 flatten(src[p], prop ? prop + '.' + p : p, output);
@@ -157,7 +119,11 @@
 
     /**
      * Captures all object keys that match
-     * a regexp pattern
+     * a regexp pattern.
+     * If `pattern` is not an actual RegExp
+     * it will be converted to one using
+     * `new RegExp(pattern)`
+     *
      * @param  {Object} map     Source object
      * @param  {RegExp} pattern Matcher
      * @return {Object}         Object with the
@@ -166,12 +132,27 @@
      */
     Flattener.glob = function glob(map, pattern) {
         map || (map = {});
-        var out = {};
+        var out = {},
+            regexp = _invalidRegExpObj(pattern);
+
+        if (!regexp) return out;
+
         Object.keys(map).forEach(function(key) {
-            if (key.match(pattern)) out[key] = map[key];
+            if (regexp.exec(key)) out[key] = map[key];
         });
         return out;
     };
 
+    var _invalidRegExpObj = function(p) {
+        if (!p || !p.constructor) return false;
+        if (p.constructor === RegExp) return p;
+        if (p.constructor === String) return new RegExp(p);
+        return false;
+    };
+
+
+    Flattener.invalidRegExpObj = _invalidRegExpObj;
+
     return Flattener;
-}));
+})
+// );
