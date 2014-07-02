@@ -74,5 +74,16 @@ define(['flattener'], function(Flattener) {
             var out = Flattener.glob(src, rgp);
             expect(out).toMatchObject(exp);
         });
+
+        it('invalidRegExpObj helper', function() {
+            var out = Flattener.invalidRegExpObj(null);
+            expect(out).toBeFalsy();
+
+            out = Flattener.invalidRegExpObj(undefined);
+            expect(out).toBeFalsy();
+
+            out = Flattener.invalidRegExpObj(23);
+            expect(out).toBeFalsy();
+        });
     });
 });
