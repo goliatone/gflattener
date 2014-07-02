@@ -7,17 +7,72 @@ define(['flattener'], function(Flattener) {
 
         it('Flattener should be loaded', function() {
             expect(Flattener).toBeTruthy();
-            var flattener = new Flattener();
-            expect(flattener).toBeTruthy();
         });
 
-        it('Flattener should initialize', function() {
-            var flattener = new Flattener();
-            var output = flattener.init();
-            var expected = 'This is just a stub!';
-            expect(output).toEqual(expected);
+        it('Flattener should have a VERSION', function() {
+            expect(Flattener.VERSION).toBeTruthy();
         });
 
+        it('should flatten objects', function() {
+            var src = {
+                prop1: {
+                    inside1: {
+                        value1: 'value1'
+                    },
+                    array1: ['arr1', 'arr2']
+                },
+                prop2: {
+                    inside2: {
+                        value2: 'value2'
+                    }
+                }
+            };
+
+            var out = Flattener.flatten(src);
+            var expected = Flattener.unflatten(out);
+            expect(src).toMatchObject(expected);
+        });
+
+        it('should unflatten objects', function() {
+            var src = {
+                'prop1.inside1.value1': 'value1',
+                'prop1.array1.0': 'arr1',
+                'prop1.array1.1': 'arr2',
+                'prop2.inside2.value2': 'value2'
+            };
+            var expected = {
+                prop1: {
+                    inside1: {
+                        value1: 'value1'
+                    },
+                    array1: ['arr1', 'arr2']
+                },
+                prop2: {
+                    inside2: {
+                        value2: 'value2'
+                    }
+                }
+            };
+
+            var out = Flattener.unflatten(src);
+            window.expected = expected;
+            window.out = out;
+            expect(out).toMatchObject(expected);
+        });
+
+        it('glob should run a regexep against each item of a provided map', function() {
+            var src = {
+                'prop1.inside1.value1': 'value1',
+                'prop1.inside1.array1': ['arr1', 'arr2'],
+                'prop2.inside2.value2': 'value2'
+            };
+            var exp = {
+                'prop2.inside2.value2': 'value2'
+            };
+
+            var rgp = /\.inside2\./;
+            var out = Flattener.glob(src, rgp);
+            expect(out).toMatchObject(exp);
+        });
     });
-
 });
