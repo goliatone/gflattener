@@ -51,7 +51,7 @@
      */
     var Flattener = {};
 
-    Flattener.VERSION = '0.0.3';
+    Flattener.VERSION = '0.1.2';
 
     ///////////////////////////////////////////////////
     // PUBLIC METHODS
