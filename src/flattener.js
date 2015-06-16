@@ -7,8 +7,8 @@
  */
 /* jshint strict: false, plusplus: true */
 /*global define: false, require: false, module: false, exports: false */
-/*(function(root, name, deps, factory) {
-    "use strict";
+(function(root, name, deps, factory) {
+    'use strict';
     // Node
     if (typeof deps === 'function') {
         factory = deps;
@@ -35,8 +35,8 @@
             return mod;
         };
     }
-}(this, "Flattener", function() {*/
-define("flattener", function() {
+}(this, 'Flattener', function() {
+// define('flattener', function() {
 
 
 
@@ -51,7 +51,7 @@ define("flattener", function() {
      */
     var Flattener = {};
 
-    Flattener.VERSION = '0.0.1'
+    Flattener.VERSION = '0.0.1';
 
     ///////////////////////////////////////////////////
     // PUBLIC METHODS
@@ -154,5 +154,4 @@ define("flattener", function() {
     Flattener.invalidRegExpObj = _invalidRegExpObj;
 
     return Flattener;
-})
-// );
+}));
