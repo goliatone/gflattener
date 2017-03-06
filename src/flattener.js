@@ -81,7 +81,9 @@
             isEmpty = true;
             for (var p in src) {
                 isEmpty = false;
-                flatten(src[p], prop ? prop + '.' + p : p, output);
+                if(src !== src[p]){
+                    flatten(src[p], prop ? prop + '.' + p : p, output);
+                }
             }
             if (isEmpty) output[prop] = {};
         }
