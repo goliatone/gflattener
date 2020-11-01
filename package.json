@@ -7,7 +7,7 @@
   "scripts": {
     "test": "bogota",
     "dtest": "watch bogota test/",
-    "coverare": "nyc npm run test"
+    "coverage": "nyc npm run test"
   },
   "main": "index.js",
   "repository": {

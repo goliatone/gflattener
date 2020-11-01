@@ -35,6 +35,19 @@ test('should flatten objects', t => {
     t.end();
 });
 
+test('should flatten array of objects', t => {
+    let src = {
+        metadata: { ruckus: { id: 23 }, items: [{ id: 1 }] },
+    };
+
+    let out = Flattener.flatten(src);
+
+    let expected = Flattener.unflatten(out);
+
+    t.deepEquals(src, expected);
+    t.end();
+});
+
 
 test('should unflatten objects', t => {
     let src = {
@@ -93,5 +106,62 @@ test('invalidRegExpObj helper', t => {
 
     out = Flattener.invalidRegExpObj(23);
     t.notOk(out);
+    t.end();
+});
+
+
+test('should flatten objects using custom delimiter', t => {
+    let expected = {
+        'prop1/inside1/value1': 'value1',
+        'prop1/array1/0': 'arr1',
+        'prop1/array1/1': 'arr2',
+        'prop2/inside2/value2': 'value2'
+    };
+
+    let src = {
+        prop1: {
+            inside1: {
+                value1: 'value1'
+            },
+            array1: ['arr1', 'arr2']
+        },
+        prop2: {
+            inside2: {
+                value2: 'value2'
+            }
+        }
+    };
+
+    let out = Flattener.flatten(src, '/');
+
+    t.deepEquals(out, expected);
+    t.end();
+});
+
+test('should unflatten objects using custom delimiter', t => {
+    let src = {
+        'prop1/inside1/value1': 'value1',
+        'prop1/array1/0': 'arr1',
+        'prop1/array1/1': 'arr2',
+        'prop2/inside2/value2': 'value2'
+    };
+
+    let expected = {
+        prop1: {
+            inside1: {
+                value1: 'value1'
+            },
+            array1: ['arr1', 'arr2']
+        },
+        prop2: {
+            inside2: {
+                value2: 'value2'
+            }
+        }
+    };
+
+    let out = Flattener.unflatten(src, '/');
+
+    t.deepEquals(out, expected);
     t.end();
 });
