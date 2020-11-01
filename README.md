@@ -1,6 +1,6 @@
 # Flattener
 
-[![Build Status](https://secure.travis-ci.org/goliatone/flattener.png)](http://travis-ci.org/goliatone/flattener)
+[![Build Status](https://secure.travis-ci.org/goliatone/gflattener.png)](http://travis-ci.org/goliatone/gflattener)
 
 Object flattener helper library. Convert (nested) objects to and from flat objects of keypath values.
 
