@@ -12,10 +12,18 @@ Object flattener helper library. Convert (nested) objects to and from flat objec
 `flatten(source,[delimeter='.'])`
 
 Transform any deep nested object in a flat object of keypath values.
+You can specify a custom path delimiter (defaults to `.`)
 
 ```js
-Flattener.flatten({user: { name: 'peperone' }})
+Flattener.flatten({user: { name: 'peperone' }});
 {'user.name': 'peperone'}
+```
+
+Custom delimiter:
+
+```js
+Flattener.flatten({user: { name: 'peperone' }}, '/');
+{'user/name': 'peperone'}
 ```
 
 ### unflatten
@@ -25,7 +33,14 @@ Flattener.flatten({user: { name: 'peperone' }})
 Transform a flattened object into a regular object.
 
 ```js
-Flattener.flatten({'user.name': 'peperone'})
+Flattener.flatten({'user.name': 'peperone'});
+{user: { name: 'peperone' }}
+```
+
+Custom delimiter:
+
+```js
+Flattener.flatten({'user/name': 'peperone'}, '/');
 {user: { name: 'peperone' }}
 ```
 
