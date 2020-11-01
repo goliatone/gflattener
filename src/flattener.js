@@ -65,16 +65,17 @@
      * @param  {Object} src    Object to be serialized
      * @return {Object}        Serialized object.
      */
-    Flattener.flatten = function flatten(src, /*private*/ prop, output) {
+    Flattener.flatten = function flatten(src, delimiter, /*private*/ prop, output) {
         prop || (prop = '');
         output || (output = {});
+        delimiter || (delimiter = '.');
 
         var isEmpty = false;
 
         if (Object(src) !== src) output[prop] = src;
         else if (Array.isArray(src)) {
             for (var i = 0, l = src.length; i < l; i++) {
-                flatten(src[i], prop ? prop + '.' + i : '' + i, output);
+                flatten(src[i], delimiter, prop ? prop + delimiter + i : '' + i, output);
             }
             if (l === 0) output[prop] = [];
         } else {
@@ -82,7 +83,7 @@
             for (var p in src) {
                 isEmpty = false;
                 if (src !== src[p]) {
-                    flatten(src[p], prop ? prop + '.' + p : p, output);
+                    flatten(src[p], delimiter, prop ? prop + delimiter + p : p, output);
                 }
             }
             if (isEmpty) output[prop] = {};
@@ -98,8 +99,9 @@
      * @param  {Object} src Map to be unmapped
      * @return {Object}
      */
-    Flattener.unflatten = function unflatten(src) {
+    Flattener.unflatten = function unflatten(src, delimiter) {
         if (Object(src) !== src || Array.isArray(src)) return src;
+        delimiter || (delimiter = '.');
 
         var result = {},
             cur, prop, idx, last, temp;
@@ -107,7 +109,7 @@
             cur = result, prop = '__ROOT__', last = 0;
 
             do {
-                idx = p.indexOf('.', last);
+                idx = p.indexOf(delimiter, last);
                 temp = p.substring(last, idx !== -1 ? idx : undefined);
                 cur = cur[prop] || (cur[prop] = (!isNaN(parseInt(temp)) ? [] : {}));
                 prop = temp;
@@ -143,6 +145,7 @@
         Object.keys(map).forEach(function(key) {
             if (regexp.exec(key)) out[key] = map[key];
         });
+
         return out;
     };
 
