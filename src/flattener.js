@@ -36,7 +36,7 @@
         };
     }
 }(this, 'Flattener', function() {
-// define('flattener', function() {
+    // define('flattener', function() {
 
 
 
@@ -51,7 +51,7 @@
      */
     var Flattener = {};
 
-    Flattener.VERSION = '0.1.2';
+    Flattener.VERSION = '0.3.1';
 
     ///////////////////////////////////////////////////
     // PUBLIC METHODS
@@ -81,7 +81,7 @@
             isEmpty = true;
             for (var p in src) {
                 isEmpty = false;
-                if(src !== src[p]){
+                if (src !== src[p]) {
                     flatten(src[p], prop ? prop + '.' + p : p, output);
                 }
             }
@@ -101,7 +101,8 @@
     Flattener.unflatten = function unflatten(src) {
         if (Object(src) !== src || Array.isArray(src)) return src;
 
-        var result = {}, cur, prop, idx, last, temp;
+        var result = {},
+            cur, prop, idx, last, temp;
         for (var p in src) {
             cur = result, prop = '__ROOT__', last = 0;
 
